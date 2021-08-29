@@ -1,7 +1,6 @@
 # require "bundler/gem_tasks"
 # task :default => :spec
 
-
 # frozen_string_literal: true
 
 require 'rake/testtask'
