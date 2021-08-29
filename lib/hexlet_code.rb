@@ -2,8 +2,13 @@
 
 require 'hexlet_code/version'
 
+# module HexletCode
 module HexletCode
   class Error < StandardError; end
+
+  def self.form_for(_, url: '#', &_)
+    "<form action=\"#{url}\" method=\"post\">\n</form>"
+  end
 
   # Class for work with html tag
   class Tag
