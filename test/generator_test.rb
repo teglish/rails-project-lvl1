@@ -13,9 +13,7 @@ class GeneratorTest < Minitest::Test
   end
 
   def test_form_for
-    # Создаем класс User с полями name и job
     user_struct = Struct.new(:name, :job, keyword_init: true)
-    # Создаем конкретно пользователя и заполняем имя
     user = user_struct.new name: 'rob'
 
     form = HexletCode.form_for user do |f|
@@ -25,7 +23,7 @@ class GeneratorTest < Minitest::Test
 
     form = HexletCode.form_for user, url: '/users' do |f|
     end
-    
+
     assert_equal form, "<form action=\"/users\" method=\"post\">\n</form>"
   end
 end
