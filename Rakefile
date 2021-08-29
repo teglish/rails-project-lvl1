@@ -2,7 +2,7 @@
 # task :default => :spec
 
 
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 require 'rake/testtask'
 
