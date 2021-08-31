@@ -22,11 +22,19 @@ module HexletCode
     def input(name, **kwargs)
       raise "#{name} doesn't exist in #{@user}" unless @user.respond_to? name
 
-      @form << case kwargs.delete(:as)
-               when nil then Tag.build('input', type: 'text', value: @user.send(name), name: name)
-               when :text then as_text(name)
-               when :select then as_select(name, kwargs)
-               end
+      case kwargs.delete(:as)
+      when :text
+        @form << as_text(name)
+      when :select
+        @form << as_select(name, kwargs)
+      when nil
+        @form << add_label(name)
+        @form << Tag.build('input', type: 'text', value: @user.send(name), name: name)
+      end
+    end
+
+    def submit
+      @form << Tag.build('input', type: 'submit', value: 'Save', name: 'commit')
     end
 
     def get
@@ -45,6 +53,10 @@ module HexletCode
       end
     end
 
+    def add_label(name)
+      Tag.build('label', for: name) { name[0].upcase + name[1..-1] }
+    end
+
     def tab
       '  '
     end
@@ -61,7 +73,9 @@ module HexletCode
     end
 
     def self.get_first_tag(tag, single, pairs, line_break: false)
-      result = ([tag] + pairs.map { |k, v| "#{k}=\"#{v}\"" } + single.compact).join(' ')
+      result = ([tag] + pairs
+        .reject { |_, v| v.to_s.empty? }
+        .map { |k, v| "#{k}=\"#{v}\"" } + single.compact).join(' ')
       result = "<#{result}>"
       result += "\n" if line_break
       result

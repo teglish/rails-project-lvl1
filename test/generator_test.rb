@@ -38,14 +38,37 @@ class GeneratorTest < Minitest::Test
     assert_equal form, form_for_pro_text
   end
 
+  def test_form_for_pro2
+    user_struct = Struct.new(:name, :job, keyword_init: true)
+    user = user_struct.new job: 'hexlet'
+    form = HexletCode.form_for user do |f|
+      f.input :name
+      f.input :job
+      f.submit
+    end
+
+    assert_equal form, form_for_pro2_text
+  end
+
   def form_for_pro_text
     '<form action="#" method="post">
+  <label for="name">Name</label>
   <input type="text" value="rob" name="name">
   <textarea cols="20" rows="40" name="job">hexlet</textarea>
   <select name="gender">
     <option value="m" selected>m</option>
     <option value="f">f</option>
   </select>
+</form>'
+  end
+
+  def form_for_pro2_text
+    '<form action="#" method="post">
+  <label for="name">Name</label>
+  <input type="text" name="name">
+  <label for="job">Job</label>
+  <input type="text" value="hexlet" name="job">
+  <input type="submit" value="Save" name="commit">
 </form>'
   end
 end
