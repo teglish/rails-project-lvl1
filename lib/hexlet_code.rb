@@ -33,7 +33,7 @@ module HexletCode
       end
     end
 
-    def submit
+    def submit(*_)
       @form << Tag.build('input', type: 'submit', value: 'Save', name: 'commit')
     end
 
