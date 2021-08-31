@@ -12,10 +12,9 @@ class GeneratorTest < Minitest::Test
     assert_equal HexletCode::Tag.build('label', for: 'email') { 'Email' }, '<label for="email">Email</label>'
   end
 
-  def test_form_for
-    user_struct = Struct.new(:name, :job, keyword_init: true)
+  def test_form_for_base
+    user_struct = Struct.new(:name, :job, :gender, keyword_init: true)
     user = user_struct.new name: 'rob'
-
     form = HexletCode.form_for user do |f|
     end
 
@@ -25,5 +24,28 @@ class GeneratorTest < Minitest::Test
     end
 
     assert_equal form, "<form action=\"/users\" method=\"post\">\n</form>"
+  end
+
+  def test_form_for_pro
+    user_struct = Struct.new(:name, :job, :gender, keyword_init: true)
+    user = user_struct.new name: 'rob', job: 'hexlet', gender: 'm'
+    form = HexletCode.form_for user do |f|
+      f.input :name
+      f.input :job, as: :text
+      f.input :gender, as: :select, collection: %w[m f]
+    end
+
+    assert_equal form, form_for_pro_text
+  end
+
+  def form_for_pro_text
+    '<form action="#" method="post">
+  <input type="text" value="rob" name="name">
+  <textarea cols="20" rows="40" name="job">hexlet</textarea>
+  <select name="gender">
+    <option value="m" selected>m</option>
+    <option value="f">f</option>
+  </select>
+</form>'
   end
 end
